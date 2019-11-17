@@ -28,7 +28,6 @@ defmodule Dockex.UI.Grids do
           _ -> :ok
         end
         :wxGrid.setGridCursor(grid, row, col)
-        #:wxEvent.skip(obj)
       end}]
     )
     grid
