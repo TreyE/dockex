@@ -22,10 +22,11 @@ defmodule Dockex.UI.Grids do
         row = :wxGridEvent.getRow(obj)
         col = :wxGridEvent.getCol(obj)
         selected_rows = :wxGrid.getSelectedRows(grid)
+        selected_col = :wxGrid.getGridCursorCol(grid)
         :wxGrid.clearSelection(grid)
-        case Enum.member?(selected_rows, row) do
-          false -> :wxGrid.selectRow(grid, row)
-          _ -> :ok
+        case {Enum.member?(selected_rows, row), selected_col == col} do
+          {true, true} -> :ok
+          _ -> :wxGrid.selectRow(grid, row)
         end
         :wxGrid.setGridCursor(grid, row, col)
       end}]
