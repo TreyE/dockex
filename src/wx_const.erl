@@ -12,6 +12,10 @@ wx_vertical() ->
 wx_expand() ->
     ?wxEXPAND.
 
+wx_align_right() -> ?wxALIGN_RIGHT.
+
+wx_align_left() -> ?wxALIGN_LEFT.
+
 wx_all() ->
     ?wxALL.
 

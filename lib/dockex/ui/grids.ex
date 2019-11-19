@@ -15,22 +15,7 @@ defmodule Dockex.UI.Grids do
       mod.sizer_flags()
     )
     :wxSizer.setItemMinSize(sizer, grid, mod.min_size())
-    :wxGrid.connect(
-      grid,
-      :grid_cell_left_click,
-      [{:callback, fn(_evt, obj) ->
-        row = :wxGridEvent.getRow(obj)
-        col = :wxGridEvent.getCol(obj)
-        selected_rows = :wxGrid.getSelectedRows(grid)
-        selected_col = :wxGrid.getGridCursorCol(grid)
-        :wxGrid.clearSelection(grid)
-        case {Enum.member?(selected_rows, row), selected_col == col} do
-          {true, true} -> :ok
-          _ -> :wxGrid.selectRow(grid, row)
-        end
-        :wxGrid.setGridCursor(grid, row, col)
-      end}]
-    )
+    mod.register_grid_events(grid)
     grid
   end
 
@@ -59,6 +44,7 @@ defmodule Dockex.UI.Grids do
         :wxGrid.setReadOnly(ctl, y_idx, x_idx, [{:isReadOnly, true}])
         x_idx + 1
       end)
+      :wxGrid.autoSizeRow(ctl, y_idx)
       y_idx + 1
     end)
     Enum.reduce(first_row, 0, fn(_col, c_idx) ->
