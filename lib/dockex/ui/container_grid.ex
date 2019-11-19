@@ -63,5 +63,23 @@ defmodule Dockex.UI.ContainerGrid do
   def register_grid_events(grid) do
     register_left_click(grid)
     register_left_doubleclick(grid)
+    register_right_click(grid)
+  end
+
+  def register_right_click(grid) do
+    :wxGrid.connect(
+      grid,
+      :grid_cell_right_click,
+      [{:callback, fn(_evt, obj) ->
+        row = :wxGridEvent.getRow(obj)
+        col = :wxGridEvent.getCol(obj)
+        {x, y} = :wxGridEvent.getPosition(obj)
+        :wxGrid.clearSelection(grid)
+        :wxGrid.selectRow(grid, row)
+        :wxGrid.setGridCursor(grid, row, col)
+        container_id = :wxGrid.getCellValue(grid, row, 0)
+        spawn( fn ->  Dockex.WindowServer.show_container_menu(x, y, container_id) end)
+      end}]
+    )
   end
 end

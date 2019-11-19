@@ -22,3 +22,5 @@ wx_all() ->
 wx_te_readonly() -> ?wxTE_READONLY.
 
 wx_maximize_box() -> ?wxMAXIMIZE_BOX.
+
+wx_ok() -> ?wxOK.
