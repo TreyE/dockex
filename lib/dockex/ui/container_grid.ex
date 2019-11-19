@@ -16,9 +16,15 @@ defmodule Dockex.UI.ContainerGrid do
 
   def update_if_needed(ctl) do
     case Dockex.Docker.ContainerList.data_changed() do
-      {:changed, new_data} -> Dockex.UI.Grids.update_list_as_cells(ctl, new_data)
+      {:changed, new_data} -> Dockex.UI.Grids.update_list_as_cells(ctl, new_data, auto_size_columns())
       _ -> :ok
     end
+  end
+
+  def auto_size_columns() do
+    [
+      1,3,4
+    ]
   end
 
   def register_left_click(grid) do

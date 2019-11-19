@@ -33,10 +33,20 @@ defmodule Dockex.Docker.ContainerList do
   def list_containers() do
     list_container_command()
     |> parse_data()
+    |> add_headers()
   end
 
   defp list_container_command() do
-   {data, _} = System.cmd("docker", ["container", "ps", "--all", "--no-trunc"])
+   {data, _} = System.cmd(
+     "docker",
+     [
+       "container",
+       "ps",
+       "--all",
+       "--no-trunc",
+       "--format={{json .}}"
+     ]
+    )
    String.trim(data)
   end
 
@@ -48,8 +58,41 @@ defmodule Dockex.Docker.ContainerList do
     end)
   end
 
-  def parse_row_to_cells(data) do
+  defp parse_row_to_cells(data) do
+    Jason.decode!(data)
+    |> extract_json
+  end
+
+  defp extract_json(data) do
+    [
+      Map.get(data, "ID", ""),
+      Map.get(data, "Image", ""),
+      Map.get(data, "Command", ""),
+      Map.get(data, "CreatedAt", ""),
+      get_status(data),
+      Map.get(data,"Ports", ""),
+      Map.get(data, "Names", "")
+    ]
+  end
+
+  defp get_status(data) do
     data
-    |> String.split(~r{\s\s+}, trim: true)
+    |> Map.get("Status", "")
+    |> String.split(" ")
+    |> Enum.at(0, "")
+  end
+
+  defp add_headers(data) do
+    [
+      [
+        "Container ID",
+        "Image",
+        "Command",
+        "Created",
+        "Status",
+        "Ports",
+        "Names"
+      ]|data
+    ]
   end
 end
