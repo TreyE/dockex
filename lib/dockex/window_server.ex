@@ -28,8 +28,8 @@ defmodule Dockex.WindowServer do
   end
 
   @impl true
-  def handle_call({:show_container_menu, x, y, data}, _from,  {wx, f, cg, _, _, cm} = state) do
-    Dockex.UI.ContainerContextMenu.show(wx, cg, cm, x, y, data)
+  def handle_call({:show_container_menu, x, y, data}, _from,  {_, _, cg, _, _, cm} = state) do
+    Dockex.UI.ContainerContextMenu.show(cg, cm, x, y, data)
     {:reply, :ok, state}
   end
 

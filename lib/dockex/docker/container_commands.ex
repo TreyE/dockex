@@ -1,12 +1,21 @@
 defmodule Dockex.Docker.ContainerCommands do
   def stop_container(container_id) do
-    {data, _} = System.cmd("docker", [
+    {data, status} = System.cmd("docker", [
       "container",
       "stop",
       to_string(container_id)
       ],
       stderr_to_stdout: true)
-      IO.inspect(data)
-    data
+    {status, data}
+  end
+
+  def start_container(container_id) do
+    {data, status} = System.cmd("docker", [
+      "container",
+      "start",
+      to_string(container_id)
+      ],
+      stderr_to_stdout: true)
+    {status, data}
   end
 end

@@ -78,7 +78,8 @@ defmodule Dockex.UI.ContainerGrid do
         :wxGrid.selectRow(grid, row)
         :wxGrid.setGridCursor(grid, row, col)
         container_id = :wxGrid.getCellValue(grid, row, 0)
-        spawn( fn ->  Dockex.WindowServer.show_container_menu(x, y, container_id) end)
+        container_status = :wxGrid.getCellValue(grid, row, 4)
+        spawn( fn ->  Dockex.WindowServer.show_container_menu(x, y, {container_id, container_status}) end)
       end}]
     )
   end
