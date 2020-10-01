@@ -2,9 +2,9 @@ defmodule Dockex.UI.ContainerContextMenu do
   def setup(_wx, _parent) do
      menu = :wxMenu.new("Container", [])
      start_menu_item = create_menu_item(menu, 1, "Start", "wxART_TICK_MARK")
-     stop_menu_item = create_menu_item(menu, 2, "Stop", "wxART_CROSS_MARK")
+     stop_menu_item = create_menu_item(menu, 2, "Stop", "wxART_QUIT")
      remove_menu_item = create_menu_item(menu, 3, "Remove", "wxART_CROSS_MARK")
-     copy_menu_item = create_menu_item(menu, 4, "Copy")
+     copy_menu_item = create_menu_item(menu, 4, "Copy ID")
      :wxMenu.append(menu, start_menu_item)
      :wxMenu.append(menu, stop_menu_item)
      :wxMenu.append(menu, remove_menu_item)
