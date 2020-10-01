@@ -3,8 +3,10 @@ defmodule Dockex.UI.ContainerContextMenu do
      menu = :wxMenu.new("Container", [])
      start_menu_item = create_menu_item(menu, 1, "Start", "wxART_TICK_MARK")
      stop_menu_item = create_menu_item(menu, 2, "Stop", "wxART_CROSS_MARK")
+     remove_menu_item = create_menu_item(menu, 3, "Remove", "wxART_CROSS_MARK")
      :wxMenu.append(menu, start_menu_item)
      :wxMenu.append(menu, stop_menu_item)
+     :wxMenu.append(menu, remove_menu_item)
      menu
   end
 
@@ -13,9 +15,11 @@ defmodule Dockex.UI.ContainerContextMenu do
       "Up" ->
         toggle_menu_item(cm, 1, false)
         toggle_menu_item(cm, 2, true)
+        toggle_menu_item(cm, 3, false)
       _ ->
         toggle_menu_item(cm, 1, true)
         toggle_menu_item(cm, 2, false)
+        toggle_menu_item(cm, 3, true)
     end
     :wxMenu.connect(
       cm,
@@ -23,6 +27,7 @@ defmodule Dockex.UI.ContainerContextMenu do
       [{:callback, fn(_evt, obj) ->
         event_id = :wxCommandEvent.getId(obj)
         case event_id do
+          3 -> execute_remove_command(data)
           2 -> execute_stop_command(data)
           1 -> execute_start_command(data)
           _ -> :ok
@@ -40,6 +45,11 @@ defmodule Dockex.UI.ContainerContextMenu do
 
   def execute_start_command(container_id) do
     {status, command_output} = Dockex.Docker.ContainerCommands.start_container(container_id)
+    command_dialog(status, command_output)
+  end
+
+  def execute_remove_command(container_id) do
+    {status, command_output} = Dockex.Docker.ContainerCommands.remove_container(container_id)
     command_dialog(status, command_output)
   end
 
