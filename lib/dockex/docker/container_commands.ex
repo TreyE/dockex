@@ -28,4 +28,14 @@ defmodule Dockex.Docker.ContainerCommands do
       stderr_to_stdout: true)
     {status, data}
   end
+
+  def copy_container_id(container_id) do
+    {_data, _status} = System.cmd("bash", [
+      "-c",
+      "echo \"" <>
+        to_string(container_id) <> "\" | " <>
+        "pbcopy"
+      ],
+      stderr_to_stdout: true)
+  end
 end
