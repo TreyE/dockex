@@ -16,3 +16,5 @@ cp -rf resources/Info.plist _build/prod/app/dockex.app/Contents/Info.plist
 
 chmod +x _build/prod/app/dockex.app/Contents/MacOS/dockex.sh
 chmod +x _build/prod/app/dockex.app/Contents/Resources/run.sh
+
+codesign -s "Trey Evans" _build/prod/app/dockex.app
